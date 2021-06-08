@@ -14,12 +14,171 @@
     <!-- Font Awesome CSS -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    {# 네이버 지도 API #}
+    <script type="text/javascript"
+            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=4rwjk29x8l&submodules=geocoder"></script>
 
+    <style>
+        #map {
+            width: 100%;
+            height: 95vh;
+            margin: 5px auto 5px auto;
+        }
 
+        .iw-inner {
+            padding: 10px;
+            font-size: smaller;
+        }
+
+        * {
+            font-family: 'Nanum Myeongjo', serif;
+        }
+
+        .centerName {
+            font-weight:bold;
+        }
+    </style>
     <script>
+        let y_cen = 37.4981125   // lat
+        let x_cen = 127.0379399  // long
+        let map;
+        let markers = [];
+        let infowindows = [];
+
+        $(document).ready(function () {
+            map = new naver.maps.Map('map', {
+                center: new naver.maps.LatLng(y_cen, x_cen),
+                zoom: 12,
+                zoomControl: true,
+                zoomControlOptions: {
+                    style: naver.maps.ZoomControlStyle.SMALL,
+                    position: naver.maps.Position.TOP_RIGHT
+                }
+            });
+            get_centers();
+            get_statistics();
+            console.log("Hello world");
+        })
+
+        function get_centers() {
+            $.ajax({
+                type: "GET",
+                url: '/center',
+                data: {},
+                success: function (response) {
+                    let centers = response["center_list"]
+                    for (let i = 0; i < centers.length; i++) {
+                        let id = centers[i]['id']
+                        {# 예방 접종 센터 고유 식별자 #}
+                        let centerName = centers[i]["centerName"]
+                        {# 예방 접종 센터 명 #}
+                        let sido = centers[i]['sido']
+                        {# 시도 #}
+                        let sigungu = centers[i]['sigungu']
+                        {# 시군구 #}
+                        let facilityName = centers[i]['facilityName']
+                        {# 시설명 #}
+                        let zipCode = centers[i]['zipCode']
+                        {# 우편번호 #}
+                        let address = centers[i]["address"]
+                        {# 주소 #}
+                        let lat = centers[i]['lat']
+                        {# 좌표(위도) #}
+                        let lng = centers[i]['lng']
+                        {# 좌표(경도) #}
+                        let centerType = centers[i]["centerType"]
+                        {# 예방 접종 센터 유형 #}
+                        let org = centers[i]['org']
+                        {# 운영기관 #}
+                        let phoneNumber = centers[i]['phoneNumber']
+                        {# 사무실 전화번호 #}
+                        let createdAt = centers[i]['createdAt']
+                        {# 센터 등록 날짜 #}
+                        let updatedAt = centers[i]['updatedAt']
+                        {# 센터 수정 날짜 #}
+
+                        let center = centers[i]
+                        {#console.log(matjip)#}
+                        {#make_card(i, matjip)#}
+                        let marker = make_marker(center);
+                        add_info(i, marker, center)
+                    }
+                }
+            });
+        }
+
+        function get_statistics() {
+            $.ajax({
+                type: "GET",
+                url: '/statistic',
+                data: {},
+                success: function (response) {
+                    let statistics = response["statistic_list"]
+                    for (let i = 0; i < statistics.length; i++) {
+                        let baseDate = statistics[i]['baseDate']
+                        let sido = statistics[i]['sido']
+                        let firstCnt = statistics[i]['firstCnt']
+                        let secondCnt = statistics[i]['secondCnt']
+                        let totalFirstCnt = statistics[i]['totalFirstCnt']
+                        let totalSecondCnt = statistics[i]['totalSecondCnt']
+                        let accumulatedFirstCnt = statistics[i]['accumulatedFirstCnt']
+                        let accumulatedSecondCnt = statistics[i]['accumulatedSecondCnt']
+                    }
+                }
+            });
+        }
+
+        function make_marker(centers) {
+            let maker = '';
+            {#if (matjip.like) {#}
+            {#    marker = new naver.maps.Marker({#}
+            {#        position: new naver.maps.LatLng(matjip["mapy"], matjip["mapx"]),#}
+            {#        map: map,#}
+            {#        icon: "{{ url_for('static', filename='marker-liked.png') }}"#}
+            {#    });#}
+            {# } else {#}
+            marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(centers["lat"], centers["lng"]),
+                map: map,
+                icon: "{{ url_for('static', filename='marker-default.png') }}"
+            });
+            {# }#}
+
+            markers.push(marker)
+            return marker
+        }
+
+        function add_info(i, marker, center) {
+            let html_temp = `<div class="iw-inner">
+                        <h5 class="centerName">${center['centerName']}</h5>
+                        <p>${center['phoneNumber']}
+                        </div>`;
+            let infowindow = new naver.maps.InfoWindow({
+                content: html_temp,
+                maxWidth: 200,
+                backgroundColor: "#fff",
+                borderColor: "#888",
+                borderWidth: 2,
+                anchorSize: new naver.maps.Size(15, 15),
+                anchorSkew: true,
+                anchorColor: "#fff",
+                pixelOffset: new naver.maps.Point(10, -10)
+            });
+            infowindows.push(infowindow)
+            naver.maps.Event.addListener(marker, "click", function (e) {
+                if (infowindow.getMap()) {
+                    infowindow.close();
+                } else {
+                    infowindow.open(map, marker);
+                    map.setCenter(infowindow.position);
+                }
+            });
+        }
+
         function logout() {
             $.removeCookie('mytoken', {path: '/'});
             alert('로그아웃되었습니다.')
@@ -41,5 +200,9 @@
         <a href="javascript:logout()" style="color:#202540">로그아웃</a>
     </div>
 </nav>
+
+<div>
+    <div id="map"/>
+</div>
 </body>
 </html>
