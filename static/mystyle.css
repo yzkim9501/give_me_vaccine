@@ -4,6 +4,10 @@ body {
     padding-top: 3.25rem;
 }
 
+* {
+    font-family: 'Nanum Myeongjo', serif;
+}
+
 .section {
     padding: 1rem 1.5rem;
     max-width: 750px;

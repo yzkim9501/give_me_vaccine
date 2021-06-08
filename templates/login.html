@@ -20,6 +20,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <style>
+        *{
+            font-family: 'Nanum Myeongjo', serif;
+        }
+        .input{
+            font-family: 'Nanum Myeongjo', serif;
+        }
+        .button{
+            font-family: 'Nanum Myeongjo', serif;
+        }
         body {
             background-color: RGBA(32, 37, 64, 0.2);
             min-height: 100vh;
@@ -34,12 +43,10 @@
         .title {
             font-weight: 800;
             font-size: 5rem;
-            font-family: 'Nanum Myeongjo', serif;
         }
 
         .subtitle {
             font-size: 2rem;
-            font-family: 'Nanum Myeongjo', serif;
         }
 
         .is-sparta {
@@ -346,7 +353,7 @@ function execDaumPostcode() {
                                 <input id="postcode" class="input" type="text" placeholder="우편번호">
                                 <span class="icon is-small is-left"><i class="fa fa-user"></i></span>
                             </div>
-                            <div id="btn-check-dup" class="control">
+                            <div id="find-postcode" class="control">
                                 <button class="button is-sparta" onclick="execDaumPostcode()">우편번호 찾기</button>
                             </div>
 
