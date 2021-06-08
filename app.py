@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for
 
 import auth, db
 import maps
+import detail
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -24,11 +25,9 @@ def home():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("auth.login", msg="로그인 정보가 존재하지 않습니다."))
 
-@app.route('/detail')
-def showDetail():
-    return render_template('detail.html')
+
 
 app.register_blueprint(auth.bp)
 app.register_blueprint(maps.bp)
-
+app.register_blueprint(detail.bp)
 app.run('0.0.0.0', port=5000, debug=True)
