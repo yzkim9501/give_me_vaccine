@@ -1,6 +1,10 @@
+import urllib
+
 import jwt
 import datetime
 import hashlib
+
+import requests
 from flask import Flask, render_template, jsonify, request,Blueprint
 from datetime import datetime, timedelta
 
@@ -48,6 +52,8 @@ def sign_up():
     detailaddress_receive = request.form['detailaddress_give']
     postcode_receive = request.form['postcode_give']
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+
+    r=getGPS_coordinate_for_KAKAO(roadaddress_receive,"3256ac8b9c70043c654930940b5a91ce")
     doc = {
         "username": username_receive,  # 아이디
         "password": password_hash,  # 비밀번호
@@ -55,6 +61,8 @@ def sign_up():
         "road_address": roadaddress_receive,  # 프로필 이름 기본값은 아이디
         "detail_address": detailaddress_receive,  # 프로필 이름 기본값은 아이디
         "postcode": postcode_receive,  # 프로필 이름 기본값은 아이디
+        "x":r['documents'][0]['road_address']['x'],
+        "y":r['documents'][0]['road_address']['y']
     }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
@@ -66,3 +74,19 @@ def check_dup():
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
+def getGPS_coordinate_for_KAKAO(address, MYAPP_KEY):
+
+    headers = {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': 'KakaoAK {}'.format(MYAPP_KEY)
+    }
+    address = address.encode("utf-8")
+
+    p = urllib.parse.urlencode(
+        {
+            'query': address
+        }
+    )
+
+    result = requests.get("https://dapi.kakao.com/v2/local/search/address.json", headers=headers, params=p)
+    return result.json()
