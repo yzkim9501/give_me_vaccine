@@ -55,7 +55,7 @@ def include_centers():
         createdAt = json_data['createdAt']  # 센터 등록 날짜
         updatedAt = json_data['updatedAt']  # 센터 수정 날짜
 
-        db.center.insert_one(json_data)
+        db.centers.insert_one(json_data)
 
 
 def include_statistics():

@@ -2,6 +2,7 @@ import jwt
 from flask import Flask, render_template, request, redirect, url_for
 
 import auth
+import maps
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -23,5 +24,6 @@ def home():
 
 
 app.register_blueprint(auth.bp)
+app.register_blueprint(maps.bp)
 
 app.run('0.0.0.0', port=5000, debug=True)
