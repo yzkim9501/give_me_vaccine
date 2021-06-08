@@ -1,5 +1,9 @@
 import requests
 from datetime import datetime, timedelta
+from pymongo import MongoClient
+import db
+
+db = db.get_db()
 
 
 def include_centers():
@@ -13,7 +17,6 @@ def include_centers():
                   f'page={page}' + \
                   f'&perPage={perPage}' + \
                   f'&serviceKey={encoding_key}'
-
     query_url = url + queryParams
 
     """
@@ -35,7 +38,6 @@ def include_centers():
 
     r = requests.get(query_url)
     rjson = r.json()
-    # return rjson["data"]
 
     for json_data in rjson["data"]:
         id = json_data['id']  # 예방 접종 센터 고유 식별자
@@ -53,9 +55,7 @@ def include_centers():
         createdAt = json_data['createdAt']  # 센터 등록 날짜
         updatedAt = json_data['updatedAt']  # 센터 수정 날짜
 
-        # print(lat, lng)
-        result.append((lat, lng))
-    return result
+        db.center.insert_one(json_data)
 
 
 def include_statistics():
@@ -66,7 +66,6 @@ def include_statistics():
     result = list()
 
     url = "https://api.odcloud.kr/api/15077756/v1/vaccine-stat"
-
     queryParams = '?' + \
                   f'page={page}' + \
                   f'&perPage={perPage}' + \
@@ -75,7 +74,6 @@ def include_statistics():
     query_url = url + queryParams
     r = requests.get(query_url)
     rjson = r.json()
-    # return rjson["data"]
 
     # 당일날의 데이터가 갱신되지 않았을 경우 이전날의 데이터를 가지고 온다.
     if rjson['currentCount'] <= 0:
@@ -110,6 +108,4 @@ def include_statistics():
         accumulatedFirstCnt = json_data['accumulatedFirstCnt']  # 전일까지의 누적 통계 (1차 접종)
         accumulatedSecondCnt = json_data['accumulatedSecondCnt']  # 전일까지의 누적 통계 (2차 접종)
 
-        # print(baseDate, firstCnt)
-        result.append((baseDate, firstCnt))
-    return result
+        db.statistics.insert_one(json_data)
