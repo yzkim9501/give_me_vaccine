@@ -21,6 +21,9 @@ def home():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("auth.login", msg="로그인 정보가 존재하지 않습니다."))
 
+@app.route('/detail')
+def showDetail():
+    return render_template('detail.html')
 
 app.register_blueprint(auth.bp)
 
