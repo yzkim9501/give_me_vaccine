@@ -9,8 +9,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link rel="shortcut icon" href="../static/vaccine.svg" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+    <!--Bootstrap JS-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
     <!-- Font Awesome CSS -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='mystyle.css') }}" rel="stylesheet">
@@ -38,8 +48,31 @@
             font-family: 'Nanum Myeongjo', serif;
         }
 
+        .sidenav-left {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            z-index: 1;
+            top: 4rem;
+            left: 0;
+            background-color: ghostwhite;
+            color: black;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+        .sidenav-right {
+            width: 200px;
+            position: fixed;
+            z-index: 1;
+            bottom: 1rem;
+            right: 1rem;
+            background-color: ghostwhite;
+            overflow-x: hidden;
+        }
+
         .centerName {
-            font-weight:bold;
+            font-weight: bold;
         }
     </style>
     <script>
@@ -196,13 +229,62 @@
                     style="font-size: larger;">나 백신 맞으러 간다</strong>
         </a>
     </div>
-    <div style="text-align: right;position: absolute;top:12px;right:20px">
+    <div style="text-align: right;position: absolute;top:25px;right:20px">
         <a href="javascript:logout()" style="color:#202540">로그아웃</a>
     </div>
 </nav>
 
 <div>
-    <div id="map"/>
+    <div id="statistics" class="sidenav-left">
+        <div class="box">
+            <article class="media">
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>전국 (2021-06-09)</strong>
+                            <br>
+                            <small>국내 발생</small>
+                            <br>
+                            581명
+                            <br>
+                            <small>해외 유입</small>
+                            <br>
+                            21명
+                        </p>
+                        <progress class="progress is-danger" value="90" max="100">90%</progress>
+                    </div>
+                    <div class="content">
+                        <p>
+                            <strong>서울 (2021-06-09)</strong>
+                            <br>
+                            <small>누적 확진자</small>
+                            <br>
+                            45,679명
+                            <br>
+                            <small>신규 확진자</small>
+                            <br>
+                            183명
+                        </p>
+                        <progress class="progress is-warning" value="75" max="100">75%</progress>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+    <div id="map"></div>
+
+    <article class="panel is-info sidenav-right">
+        <p class="panel-heading">
+            병원 목록
+        </p>
+        <p class="panel-tabs">
+            <a class="is-active">나의 병원</a>
+        </p>
+        <a class="panel-block"> 병원 1 </a>
+        <a class="panel-block"> 병원 2 </a>
+        <a class="panel-block"> 병원 3 </a>
+        <a class="panel-block"> 병원 4 </a>
+    </article>
 </div>
 </body>
 </html>
