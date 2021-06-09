@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>병원상세정보 | 나 백신 맞으러 간다</title>
+     <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+    <script>
+    </script>
+</head>
+<body>
+    <table class="table table-striped">
+  <tbody>
+    <tr>
+      <th scope="row">예방 접종 센터 명</th>
+      <td>{{ center_info.centerName }}</td>
+    </tr>
+    <tr>
+      <th scope="row">시도</th>
+      <td>{{ center_info.sido }}</td>
+    </tr>
+    <tr>
+      <th scope="row">시군구</th>
+      <td colspan="2">{{ center_info.sigungu }}</td>
+    </tr>
+    <tr>
+        <th scope="row">시설명</th>
+        <td colspan="2">{{ center_info.facilityName}}</td>
+    </tr>
+    <tr>
+        <th scope="row">우편번호</th>
+        <td colspan="2">{{ center_info.zipCode }}</td>
+    </tr>
+    <tr>
+        <th scope="row">주소</th>
+        <td colspan="2">{{ center_info.address }}</td>
+    </tr>
+    <tr>
+        <th scope="row">예방 접종 센터 유형</th>
+        <td colspan="2">{{ center_info.centerType }}</td>
+    </tr>
+    <tr>
+        <th scope="row">운영기관</th>
+        <td colspan="2">{{ center_info.org }}</td>
+    </tr>
+    <tr>
+        <th scope="row">사무실 전화번호</th>
+        <td colspan="2">{{ center_info.phoneNumber }}</td>
+    </tr>
+  </tbody>
+</table>
+<div id="return-box">
+    <button onclick="window.location.href='/maps'">돌아가기</button>
+</div>
+</body>
+</html>

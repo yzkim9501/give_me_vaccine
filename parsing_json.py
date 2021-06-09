@@ -131,3 +131,7 @@ def include_statistics():
         accumulatedSecondCnt = json_data['accumulatedSecondCnt']  # 전일까지의 누적 통계 (2차 접종)
 
         db.statistics.insert_one(json_data)
+
+
+include_statistics()
+include_centers()
