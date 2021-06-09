@@ -6,7 +6,11 @@ import db
 db = db.get_db()
 
 
+# 갱신일자 : 1일 1번
+# 첫 갱신 후 수정 하지 않도록 설정
 def include_centers():
+    db.centers.delete_many({})
+
     page = 1
     perPage = 1000
     encoding_key = "sopjfpWYV6pdBmu8EUQVJWkAokTomNvzK4zMcYGUjvudoSgiOvB16V86LXzfjna9Yg9xYmFtN6qyQf2N7pWEJw%3D%3D"
@@ -34,6 +38,8 @@ def include_centers():
     "sigungu": "동구",
     "updatedAt": "2021-06-02 07:32:04",
     "zipCode": "61452"
+    
+    
     """
 
     r = requests.get(query_url)
@@ -58,7 +64,23 @@ def include_centers():
         db.centers.insert_one(json_data)
 
 
+""" 
+  논리 구현
+ # 이루어 져야할 것 : 서버의 시간 동기화 가 현실의 시간과 동일한가?
+  - 해결 방안 utck로 서버의 시간을 동기화 시킨 후 운영을 시작하도록 사전 설정을 해야한다.
+ 1. baseDate와 datetime.now()를 비교하여 datetime.now()가 baseDate보다 더 크다면 
+ 2. 오늘 날짜로 api를호출한다.
+ 3. 호출한 api의 데이터가 존재하지 않다면 == (아직까지 api 갱신이 이루어 지지 않았다면) 
+ 4 - 1 . return으로 api 갱신을 멈춘다.
+ 4 - 2. 만약 호출한 api의 데이터가 존재한다면
+ 5. 현재 DB의 데이터를 Delete하고, 호출한 api데이터를 insert 한다
+"""
+
+
+# 갱신 일자 : 9시45 ~ 10시
+# 12시 기점으로 갱신할 것
 def include_statistics():
+    db.statistics.delete_many({})
     page = 1
     perPage = 1000
     now = datetime.now()
