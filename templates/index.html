@@ -35,8 +35,11 @@
 
     <style>
         #map {
-            width: 100%;
-            height: 95vh;
+            position: fixed;
+            bottom:0;
+            right:0;
+            width: calc(100% - 250px);
+            height: calc(100vh - 5em);
             margin: 5px auto 5px auto;
         }
 
@@ -109,6 +112,7 @@
                 }
             });
             get_maps();
+            map.getElement().style.position="fixed";
         })
 
         {# TODO 로딩이 된 이후부터 like_list를 가지고 오기 때문에 로딩의 속도가 느리지 않을까?#}
