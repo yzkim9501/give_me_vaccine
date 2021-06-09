@@ -154,12 +154,27 @@
                     for (let i = 0; i < statistics.length; i++) {
                         let baseDate = statistics[i]['baseDate']
                         let sido = statistics[i]['sido']
-                        let firstCnt = statistics[i]['firstCnt']
-                        let secondCnt = statistics[i]['secondCnt']
-                        let totalFirstCnt = statistics[i]['totalFirstCnt']
-                        let totalSecondCnt = statistics[i]['totalSecondCnt']
-                        let accumulatedFirstCnt = statistics[i]['accumulatedFirstCnt']
-                        let accumulatedSecondCnt = statistics[i]['accumulatedSecondCnt']
+                        let firstCnt = numberWithCommas(statistics[i]['firstCnt'])
+                        let secondCnt = numberWithCommas(statistics[i]['secondCnt'])
+                        let totalFirstCnt = numberWithCommas(statistics[i]['totalFirstCnt'])
+                        let totalSecondCnt = numberWithCommas(statistics[i]['totalSecondCnt'])
+                        let accumulatedFirstCnt = numberWithCommas(statistics[i]['accumulatedFirstCnt'])
+                        let accumulatedSecondCnt = numberWithCommas(statistics[i]['accumulatedSecondCnt'])
+                        let temp_html = `<p>
+                                        <br>${sido}
+                                        <strong>당일 통계</strong>
+                                        <br>
+                                        1차접종 ${firstCnt}명
+                                        <br>
+                                        2차접종 ${secondCnt}명
+                                        <br>
+                                        <strong>전체 누적 통계</strong>
+                                        <br>
+                                        1차 접종 ${totalFirstCnt}명
+                                        <br>
+                                        2차 접종 ${totalSecondCnt}명
+                                    </p>`
+                        $('#vaccinated-stat').append(temp_html)
                     }
                 }
             });
@@ -217,6 +232,10 @@
             alert('로그아웃되었습니다.')
             window.location.href = "/login"
         }
+
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
     </script>
 
 </head>
@@ -239,6 +258,27 @@
         <div class="box">
             <article class="media">
                 <div class="media-content">
+                    <div class="content" id="vaccinated-stat">
+                        <table class="table table-dark">
+                            <thead>
+                            ...
+                            </thead>
+                            <tbody>
+                            <tr class="table-active">
+                                ...
+                            </tr>
+                            <tr>
+                                ...
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2" class="table-active">Larry the Bird</td>
+                                <td>@twitter</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
                     <div class="content">
                         <p>
                             <strong>전국 (2021-06-09)</strong>
