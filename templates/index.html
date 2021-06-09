@@ -52,7 +52,7 @@
 
         .sidenav-left {
             height: 100%;
-            width: 200px;
+            width: 250px;
             position: fixed;
             z-index: 1;
             top: 4rem;
@@ -209,17 +209,45 @@
                 success: function (response) {
                     let statistics = response["statistic_list"]
                     for (let i = 0; i < statistics.length; i++) {
-                        let baseDate = statistics[i]['baseDate']
+                        let baseDate = statistics[i]['baseDate'].split(' ')[0]
                         let sido = statistics[i]['sido']
                         let firstCnt = statistics[i]['firstCnt']
                         let secondCnt = statistics[i]['secondCnt']
                         let totalFirstCnt = statistics[i]['totalFirstCnt']
                         let totalSecondCnt = statistics[i]['totalSecondCnt']
-                        let accumulatedFirstCnt = statistics[i]['accumulatedFirstCnt']
-                        let accumulatedSecondCnt = statistics[i]['accumulatedSecondCnt']
+                        let color = set_colors(i)
+                        let temp_html = `
+            <article class="message ${color}">
+              <div class="message-header">
+                <p>${sido}</p>
+              </div>
+              <div class="message-body">
+                <p>
+                    <strong>${baseDate}</strong>
+                    <br>
+                    <small>1차접종</small> ${firstCnt}명
+                    <br>
+                    <small>2차접종</small> ${secondCnt}명
+                    <br>
+                    <strong>전체 누적 통계</strong>
+                    <br>
+                    <small>1차 접종</small> ${totalFirstCnt}명
+                    <br>
+                    <small>2차 접종</small> ${totalSecondCnt}명
+                </p>
+            </div>
+            </article>
+`
+                        $('#article-box').append(temp_html)
                     }
                 }
             });
+        }
+
+        function set_colors(i) {
+            if (i == 0) return "is-primary";
+            if (i <= 8) return "is-success";
+            return "is-warning";
         }
 
         function make_marker(center) {
@@ -329,9 +357,6 @@
             <strong class="is-sparta"
                     style="font-size: larger;">나 백신 맞으러 간다</strong>
         </a>
-    </div>
-    <div style="text-align: right;position: absolute;top:25px;right:20px">
-        <a href="javascript:logout()" style="color:#202540">로그아웃</a>
     </div>
     <div class="navbar-brand">
         <div class="navbar-item">
