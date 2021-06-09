@@ -285,6 +285,9 @@
                         <a href="javascript:click2like('${center.id}')">
                             ${icon}
                         </a>
+                        <a href="javascript:click2detail('${center.id}')">
+                            </br>상세정보보기
+                        </a>
                         </div>`;
 
             let infowindow = new naver.maps.InfoWindow({
@@ -339,6 +342,10 @@
                 infowindow.open(map, marker);
                 map.setCenter(infowindow.position)
             }
+        }
+
+        function click2detail(id) {
+            window.location.href = `/detail/${id}`
         }
 
         function logout() {
