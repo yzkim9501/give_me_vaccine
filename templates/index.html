@@ -31,7 +31,6 @@
     {# 네이버 지도 API #}
     <script type="text/javascript"
             src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=4rwjk29x8l&submodules=geocoder"></script>
-
     <style>
         #map {
             width: 100%;
@@ -50,7 +49,7 @@
 
         .sidenav-left {
             height: 100%;
-            width: 200px;
+            width: 250px;
             position: fixed;
             z-index: 1;
             top: 4rem;
@@ -59,6 +58,7 @@
             color: black;
             overflow-x: hidden;
             padding-top: 20px;
+            padding-bottom: 50px;
         }
 
         .sidenav-right {
@@ -69,6 +69,11 @@
             right: 1rem;
             background-color: ghostwhite;
             overflow-x: hidden;
+        }
+
+        .navitem {
+            cursor: default;
+            border-radius: 20px;
         }
 
         .centerName {
@@ -94,7 +99,6 @@
             });
             get_centers();
             get_statistics();
-            console.log("Hello world");
         })
 
         function get_centers() {
@@ -152,34 +156,47 @@
                 success: function (response) {
                     let statistics = response["statistic_list"]
                     for (let i = 0; i < statistics.length; i++) {
-                        let baseDate = statistics[i]['baseDate']
+                        let baseDate = statistics[i]['baseDate'].split(' ')[0]
                         let sido = statistics[i]['sido']
                         let firstCnt = numberWithCommas(statistics[i]['firstCnt'])
                         let secondCnt = numberWithCommas(statistics[i]['secondCnt'])
                         let totalFirstCnt = numberWithCommas(statistics[i]['totalFirstCnt'])
                         let totalSecondCnt = numberWithCommas(statistics[i]['totalSecondCnt'])
-                        let accumulatedFirstCnt = numberWithCommas(statistics[i]['accumulatedFirstCnt'])
-                        let accumulatedSecondCnt = numberWithCommas(statistics[i]['accumulatedSecondCnt'])
-                        let temp_html = `<p>
-                                        <br>${sido}
-                                        <strong>당일 통계</strong>
-                                        <br>
-                                        1차접종 ${firstCnt}명
-                                        <br>
-                                        2차접종 ${secondCnt}명
-                                        <br>
-                                        <strong>전체 누적 통계</strong>
-                                        <br>
-                                        1차 접종 ${totalFirstCnt}명
-                                        <br>
-                                        2차 접종 ${totalSecondCnt}명
-                                    </p>`
-                        $('#vaccinated-stat').append(temp_html)
+                        let color = set_colors(i)
+                        let temp_html = `
+            <article class="message ${color}">
+              <div class="message-header">
+                <p>${sido}</p>
+              </div>
+              <div class="message-body">
+                <p>
+                    <strong>${baseDate}</strong>
+                    <br>
+                    <small>1차접종</small> ${firstCnt}명
+                    <br>
+                    <small>2차접종</small> ${secondCnt}명
+                    <br>
+                    <strong>전체 누적 통계</strong>
+                    <br>
+                    <small>1차 접종</small> ${totalFirstCnt}명
+                    <br>
+                    <small>2차 접종</small> ${totalSecondCnt}명
+                </p>
+            </div>
+            </article>
+
+`
+                        $('#article-box').append(temp_html)
                     }
                 }
             });
+            set_colors();
         }
-
+        function set_colors(i){
+            if(i==0) return "is-primary";
+            if(i<=8) return "is-success";
+            return "is-warning";
+        }
         function make_marker(centers) {
             let maker = '';
             {#if (matjip.like) {#}
@@ -248,69 +265,31 @@
                     style="font-size: larger;">나 백신 맞으러 간다</strong>
         </a>
     </div>
-    <div style="text-align: right;position: absolute;top:25px;right:20px">
-        <a href="javascript:logout()" style="color:#202540">로그아웃</a>
+    <div class="navbar-brand">
+        <div class="navbar-item">
+            <div class="buttons">
+                <button class="button is-info navitem">확진 {{ occur }}</button>
+                <button class="button is-success navitem">격리 해제 {{ fin }}</button>
+                <button class="button is-warning navitem">격리중 {{ ing }}</button>
+                <button class="button is-danger navitem">사망 {{ dead }}</button>
+            </div>
+        </div>
+    </div>
+    <div class="navbar-brand">
+        <div class="navbar-item">
+            <a href="javascript:logout()" style="color:#202540">로그아웃</a>
+        </div>
     </div>
 </nav>
 
 <div>
     <div id="statistics" class="sidenav-left">
-        <div class="box">
-            <article class="media">
-                <div class="media-content">
-                    <div class="content" id="vaccinated-stat">
-                        <table class="table table-dark">
-                            <thead>
-                            ...
-                            </thead>
-                            <tbody>
-                            <tr class="table-active">
-                                ...
-                            </tr>
-                            <tr>
-                                ...
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td colspan="2" class="table-active">Larry the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                    <div class="content">
-                        <p>
-                            <strong>전국 (2021-06-09)</strong>
-                            <br>
-                            <small>국내 발생</small>
-                            <br>
-                            581명
-                            <br>
-                            <small>해외 유입</small>
-                            <br>
-                            21명
-                        </p>
-                        <progress class="progress is-danger" value="90" max="100">90%</progress>
-                    </div>
-                    <div class="content">
-                        <p>
-                            <strong>서울 (2021-06-09)</strong>
-                            <br>
-                            <small>누적 확진자</small>
-                            <br>
-                            45,679명
-                            <br>
-                            <small>신규 확진자</small>
-                            <br>
-                            183명
-                        </p>
-                        <progress class="progress is-warning" value="75" max="100">75%</progress>
-                    </div>
-                </div>
-            </article>
+        <div class="box" id="article-box">
         </div>
     </div>
+
+    <section class="accordions" class="sidenav-left" id="article-box">
+    </section>
     <div id="map"></div>
 
     <article class="panel is-info sidenav-right">
