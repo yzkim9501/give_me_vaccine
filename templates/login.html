@@ -77,7 +77,7 @@
         function sign_in() {
             let username = $("#input-username").val()
             let password = $("#input-password").val()
-
+            let longlong=$("#longlong").is(":checked")
             if (username == "") {
                 $("#help-id-login").text("아이디를 입력해주세요.")
                 $("#input-username").focus()
@@ -98,7 +98,8 @@
                 url: "/sign_in",
                 data: {
                     username_give: username,
-                    password_give: password
+                    password_give: password,
+                    longlong_give: longlong
                 },
                 success: function (response) {
                     if (response['result'] == 'success') {
@@ -324,8 +325,9 @@ function execDaumPostcode() {
                             <button class="level-item button is-sparta" onclick="sign_in()">
                                 로그인
                             </button>
-
                         </nav>
+                            <input id="longlong" type="checkbox">
+                            <label for="longlong">로그인 상태 유지</label>
                         <hr>
                         <h4 class="mb-3">아직 회원이 아니라면</h4>
                         <nav class="level is-mobile">
