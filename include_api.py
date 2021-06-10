@@ -43,20 +43,20 @@ def include_centers():
 
     db.centers.delete_many({})
     for json_data in rjson["data"]:
-        id = json_data['id']  # 예방 접종 센터 고유 식별자
-        centerName = json_data["centerName"]  # 예방 접종 센터 명
-        sido = json_data['sido']  # 시도
-        sigungu = json_data['sigungu']  # 시군구
-        facilityName = json_data['facilityName']  # 시설명
-        zipCode = json_data['zipCode']  # 우편번호
-        address = json_data["address"]  # 주소
-        lat = json_data['lat']  # 좌표(위도)
-        lng = json_data['lng']  # 좌표(경도)
-        centerType = json_data["centerType"]  # 예방 접종 센터 유형
-        org = json_data['org']  # 운영기관
-        phoneNumber = json_data['phoneNumber']  # 사무실 전화번호
-        createdAt = json_data['createdAt']  # 센터 등록 날짜
-        updatedAt = json_data['updatedAt']  # 센터 수정 날짜
+        # id = json_data['id']  # 예방 접종 센터 고유 식별자
+        # centerName = json_data["centerName"]  # 예방 접종 센터 명
+        # sido = json_data['sido']  # 시도
+        # sigungu = json_data['sigungu']  # 시군구
+        # facilityName = json_data['facilityName']  # 시설명
+        # zipCode = json_data['zipCode']  # 우편번호
+        # address = json_data["address"]  # 주소
+        # lat = json_data['lat']  # 좌표(위도)
+        # lng = json_data['lng']  # 좌표(경도)
+        # centerType = json_data["centerType"]  # 예방 접종 센터 유형
+        # org = json_data['org']  # 운영기관
+        # phoneNumber = json_data['phoneNumber']  # 사무실 전화번호
+        # createdAt = json_data['createdAt']  # 센터 등록 날짜
+        # updatedAt = json_data['updatedAt']  # 센터 수정 날짜
 
         db.centers.insert_one(json_data)
 
@@ -120,14 +120,14 @@ def include_statistics():
 
     db.statistics.delete_many({})
     for json_data in rjson['data']:
-        baseDate = json_data['baseDate']  # 통계 기준일자
-        sido = json_data['sido']  # 지역명칭
-        firstCnt = json_data['firstCnt']  # 당일 통계(1차 접종)
-        secondCnt = json_data['secondCnt']  # 당일 통계(2차 접종)
-        totalFirstCnt = json_data['totalFirstCnt']  # 전체 누적 통계(1차 접종)
-        totalSecondCnt = json_data['totalSecondCnt']  # 전체 누적 통계(2차 접종)
-        accumulatedFirstCnt = json_data['accumulatedFirstCnt']  # 전일까지의 누적 통계 (1차 접종)
-        accumulatedSecondCnt = json_data['accumulatedSecondCnt']  # 전일까지의 누적 통계 (2차 접종)
+        # baseDate = json_data['baseDate']  # 통계 기준일자
+        # sido = json_data['sido']  # 지역명칭
+        # firstCnt = json_data['firstCnt']  # 당일 통계(1차 접종)
+        # secondCnt = json_data['secondCnt']  # 당일 통계(2차 접종)
+        # totalFirstCnt = json_data['totalFirstCnt']  # 전체 누적 통계(1차 접종)
+        # totalSecondCnt = json_data['totalSecondCnt']  # 전체 누적 통계(2차 접종)
+        # accumulatedFirstCnt = json_data['accumulatedFirstCnt']  # 전일까지의 누적 통계 (1차 접종)
+        # accumulatedSecondCnt = json_data['accumulatedSecondCnt']  # 전일까지의 누적 통계 (2차 접종)
 
         db.statistics.insert_one(json_data)
 
