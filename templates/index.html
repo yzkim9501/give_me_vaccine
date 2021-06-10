@@ -64,6 +64,7 @@
             color: black;
             overflow-x: hidden;
             padding-top: 20px;
+            padding-bottom: 60px;
         }
 
         .sidenav-right {
@@ -91,6 +92,9 @@
 
         }
 
+        ::-webkit-scrollbar {
+            display: none;
+        }
     </style>
     <script>
         let y_cen = `{{ user_info.y }}`   // lat
@@ -118,7 +122,7 @@
         })
 
         {# TODO 로딩이 된 이후부터 like_list를 가지고 오기 때문에 로딩의 속도가 느리지 않을까?#}
-        {# TODO 한번의 북마크 이후 모든 사항을 새로고침하는것은 트래픽이 너무 많이 소모되는건 아닌가?#}
+        {# TODO 한번의 북마크 이후 모든 사항을 새로고침하는것은 자원이 너무 많이 소모되는건 아닌가?#}
 
         function get_maps() {
             like_list = [];
@@ -457,8 +461,8 @@
         </div>
     </div>
 
-    <section class="accordions" class="sidenav-left" id="article-box">
-    </section>
+{#    <section class="accordions" class="sidenav-left" id="article-box">#}
+{#    </section>#}
     <div id="map"></div>
 
     <article class="panel is-info sidenav-right" id="panel-main" style="display:none">

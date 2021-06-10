@@ -95,17 +95,21 @@ def include_statistics():
     r = requests.get(query_url)
     rjson = r.json()
 
-    # 당일날의 데이터가 갱신되지 않았을 경우 이전날의 데이터를 가지고 온다.
-    if rjson['currentCount'] <= 0:
-        now = now - timedelta(days=1)
-        queryParams = '?' + \
-                      f'page={page}' + \
-                      f'&perPage={perPage}' + \
-                      f"&cond%5BbaseDate%3A%3AEQ%5D={now.strftime('%Y-%m-%d')} 00:00:00" + \
-                      f'&serviceKey={encoding_key}'
-        query_url = url + queryParams
-        r = requests.get(query_url)
-        rjson = r.json()
+    try:
+        # 당일날의 데이터가 갱신되지 않았을 경우 이전날의 데이터를 가지고 온다.
+        if rjson['currentCount'] <= 0:
+            now = now - timedelta(days=1)
+            queryParams = '?' + \
+                          f'page={page}' + \
+                          f'&perPage={perPage}' + \
+                          f"&cond%5BbaseDate%3A%3AEQ%5D={now.strftime('%Y-%m-%d')} 00:00:00" + \
+                          f'&serviceKey={encoding_key}'
+            query_url = url + queryParams
+            r = requests.get(query_url)
+            rjson = r.json()
+    # 데이터를 정상적으로 가지고 오지 못하였을 경우
+    except:
+        threading.Timer(reload_delay, include_statistics).start();
 
     """
     accumulatedFirstCnt : 7600157
