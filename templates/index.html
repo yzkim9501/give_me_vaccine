@@ -277,14 +277,16 @@
 
         function add_info(marker, center) {
             let icon = `<i class="fa fa-star-o" aria-hidden="true"></i>`
-
+            let width=100+`${center['centerName']}`.length*13;
             try {
                 if (like_list.find(e => e == center.id))
                     icon = `<i class="fa fa-star" aria-hidden="true"></i>`
             } catch {
             }
 
-            let html_temp = `<div class="iw-inner">
+            let html_temp = `
+<div style="width:${width}px">
+<div class="iw-inner">
                         <h5 class="centerName">${center['centerName']}</h5>
                         <p>${center['phoneNumber']}
                         <a href="javascript:click2like('${center.id}')">
@@ -336,11 +338,12 @@
                             </div>
                         </details>
                         <ul>&nbsp;</ul>
+                        </div>
                         </div>`;
 
             let infowindow = new naver.maps.InfoWindow({
                 content: html_temp,
-                maxWidth: 300,
+                maxWidth: 500,
                 backgroundColor: "#fff",
                 borderColor: "#888",
                 borderWidth: 2,
