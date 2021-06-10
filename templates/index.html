@@ -216,10 +216,10 @@
                     for (let i = 0; i < statistics.length; i++) {
                         let baseDate = statistics[i]['baseDate'].split(' ')[0]
                         let sido = statistics[i]['sido']
-                        let firstCnt = statistics[i]['firstCnt']
-                        let secondCnt = statistics[i]['secondCnt']
-                        let totalFirstCnt = statistics[i]['totalFirstCnt']
-                        let totalSecondCnt = statistics[i]['totalSecondCnt']
+                        let firstCnt = numberWithCommas(statistics[i]['firstCnt'])
+                        let secondCnt = numberWithCommas(statistics[i]['secondCnt'])
+                        let totalFirstCnt = numberWithCommas(statistics[i]['totalFirstCnt'])
+                        let totalSecondCnt = numberWithCommas(statistics[i]['totalSecondCnt'])
                         let color = set_colors(i)
                         let temp_html = `
             <article class="message ${color}">
@@ -403,6 +403,9 @@
             $.removeCookie('mytoken', {path: '/'});
             alert('로그아웃되었습니다.')
             window.location.href = "/login"
+        }
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
     </script>
 
