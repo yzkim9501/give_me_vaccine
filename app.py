@@ -8,6 +8,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import auth, db
 import maps
 import detail
+import include_api
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -63,7 +64,14 @@ def home():
 
 
 if __name__ == '__main__':
+    include_api.include_centers();
+    include_api.include_statistics();
+
     app.register_blueprint(auth.bp)
     app.register_blueprint(maps.bp)
     app.register_blueprint(detail.bp)
+    # Debug=True로 지정되어 있다면 main 함수가 총 2번 실행되기 때문에
+    # 운영을 할 때는 debug=False로 설정하여 배포하여야 한다.
     app.run('0.0.0.0', port=5000, debug=True)
+    # app.run('0.0.0.0', port=5000, debug=False) 
+

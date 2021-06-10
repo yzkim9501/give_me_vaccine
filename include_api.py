@@ -1,20 +1,18 @@
 import requests
 from datetime import datetime, timedelta
-from pymongo import MongoClient
+import threading
 import db
 
 db = db.get_db()
+reload_delay = 60 * 60 * 12;  # 12시간
 
 
 # 갱신일자 : 1일 1번
 # 첫 갱신 후 수정 하지 않도록 설정
 def include_centers():
-    db.centers.delete_many({})
-
     page = 1
     perPage = 1000
     encoding_key = "sopjfpWYV6pdBmu8EUQVJWkAokTomNvzK4zMcYGUjvudoSgiOvB16V86LXzfjna9Yg9xYmFtN6qyQf2N7pWEJw%3D%3D"
-    result = list()
 
     url = 'https://api.odcloud.kr/api/15077586/v1/centers'
     queryParams = '?' + \
@@ -38,13 +36,12 @@ def include_centers():
     "sigungu": "동구",
     "updatedAt": "2021-06-02 07:32:04",
     "zipCode": "61452"
-    
-    
     """
 
     r = requests.get(query_url)
     rjson = r.json()
 
+    db.centers.delete_many({})
     for json_data in rjson["data"]:
         id = json_data['id']  # 예방 접종 센터 고유 식별자
         centerName = json_data["centerName"]  # 예방 접종 센터 명
@@ -63,6 +60,9 @@ def include_centers():
 
         db.centers.insert_one(json_data)
 
+    # docs : https://docs.python.org/ko/3.7/library/threading.html
+    threading.Timer(reload_delay, include_centers).start()
+
 
 """ 
   논리 구현
@@ -80,12 +80,10 @@ def include_centers():
 # 갱신 일자 : 9시45 ~ 10시
 # 12시 기점으로 갱신할 것
 def include_statistics():
-    db.statistics.delete_many({})
     page = 1
     perPage = 1000
     now = datetime.now()
     encoding_key = "sopjfpWYV6pdBmu8EUQVJWkAokTomNvzK4zMcYGUjvudoSgiOvB16V86LXzfjna9Yg9xYmFtN6qyQf2N7pWEJw%3D%3D"
-    result = list()
 
     url = "https://api.odcloud.kr/api/15077756/v1/vaccine-stat"
     queryParams = '?' + \
@@ -120,6 +118,7 @@ def include_statistics():
     totalSecondCnt : 2299853
     """
 
+    db.statistics.delete_many({})
     for json_data in rjson['data']:
         baseDate = json_data['baseDate']  # 통계 기준일자
         sido = json_data['sido']  # 지역명칭
@@ -132,6 +131,5 @@ def include_statistics():
 
         db.statistics.insert_one(json_data)
 
-
-include_statistics()
-include_centers()
+    # docs : https://docs.python.org/ko/3.7/library/threading.html
+    threading.Timer(reload_delay, include_statistics).start();
