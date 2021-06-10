@@ -7,7 +7,6 @@ from flask import Flask, render_template, request, redirect, url_for
 
 import auth, db
 import maps
-import detail
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -65,5 +64,4 @@ def home():
 if __name__ == '__main__':
     app.register_blueprint(auth.bp)
     app.register_blueprint(maps.bp)
-    app.register_blueprint(detail.bp)
     app.run('0.0.0.0', port=5000, debug=True)

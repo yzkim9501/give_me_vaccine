@@ -87,6 +87,7 @@
             font-weight: bold;
 
         }
+
     </style>
     <script>
         let y_cen = `{{ user_info.y }}`   // lat
@@ -285,14 +286,57 @@
                         <a href="javascript:click2like('${center.id}')">
                             ${icon}
                         </a>
-                        <a href="javascript:click2detail('${center.id}')">
-                            </br>상세정보보기
-                        </a>
+                        <details>
+                            <summary>상세정보보기</summary>
+                            <div>
+                                <table class="table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">예방 접종 센터 명</th>
+                                            <td>${center.centerName}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">시도</th>
+                                            <td>${center.sido}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">시군구</th>
+                                            <td colspan="2">${center.sigungu}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">시설명</th>
+                                            <td colspan="2">${center.facilityName}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">우편번호</th>
+                                            <td colspan="2">${center.zipCode}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">주소</th>
+                                            <td colspan="2">${center.address}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">예방 접종 센터 유형</th>
+                                            <td colspan="2">${center.centerType}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">운영기관</th>
+                                            <td colspan="2">${center.org}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">사무실 전화번호</th>
+                                            <td colspan="2">${center.phoneNumber}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </details>
+                        <ul>&nbsp;</ul>
                         </div>`;
 
             let infowindow = new naver.maps.InfoWindow({
                 content: html_temp,
-                maxWidth: 200,
+                maxWidth: 300,
                 backgroundColor: "#fff",
                 borderColor: "#888",
                 borderWidth: 2,
